@@ -3,12 +3,20 @@
 from django.db import migrations
 
 def copy_old_data_to_new_table(apps, schema_editor):
-    # Récupère les modèles à partir du "registry" des migrations
-    OldModel = apps.get_model('oc_lettings_site', 'Address')
-    NewModel = apps.get_model('lettings', 'Address')
+    # Récupère anciens modèles Address et Letting dans l'app oc_lettings_site
+    OldAddressModel = apps.get_model('oc_lettings_site', 'Address')
+    OldLettingModel = apps.get_model('oc_lettings_site', 'Letting')
 
-    for old in OldModel.objects.all():
-        NewModel.objects.create(
+    # Récupère les nouveaux modèles dans l'app lettings
+    NewAddressModel = apps.get_model('lettings', 'Address')
+    NewLettingModel = apps.get_model('lettings', 'Letting')
+
+    # Dictionnaire pour relier les anciennes adresses aux nouvelles
+    address_map = {}
+
+    # Copie des addresses
+    for old in OldAddressModel.objects.all():
+        new_addr = NewAddressModel.objects.create(
             number=old.number,
             street=old.street,
             city=old.city,
@@ -16,6 +24,25 @@ def copy_old_data_to_new_table(apps, schema_editor):
             zip_code=old.zip_code,
             country_iso_code=old.country_iso_code,
         )
+        # Correspondance entre l'id de l'ancien avec l'addresse du nouveau
+        address_map[old.id] = new_addr
+
+    # Copie des lettings
+    for old in OldLettingModel.objects.all():
+        # Récupérer dans dictionnaire nouvelle addresse de l'ancien id
+        new_address = address_map.get(old.address_id)
+        if new_address:
+            NewLettingModel.objects.create(
+                title=old.title,
+                address=new_address,
+            )
+
+
+def reverse_copy_data(apps, schema_editor):
+    NewAddressModel = apps.get_model('lettings', 'Address')
+    NewAddressModel.objects.all().delete()
+    NewLettingModel = apps.get_model('lettings','Letting')
+    NewLettingModel.objects.all().delete()
 
 class Migration(migrations.Migration):
 
@@ -24,5 +51,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(copy_old_data_to_new_table),
+        migrations.RunPython(copy_old_data_to_new_table, reverse_copy_data),
     ]
