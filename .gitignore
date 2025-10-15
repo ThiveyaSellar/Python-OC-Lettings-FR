@@ -1,3 +1,7 @@
 **/__pycache__
 *.pyc
 venv
+oc-lettings-site-dump.sql
+oc-lettings-site-duplicate.sqlite3
+oc-lettings-site-from-dump.sqlite3
+.idea/
