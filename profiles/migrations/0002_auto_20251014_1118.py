@@ -3,6 +3,12 @@
 from django.db import migrations
 
 def copy_old_data_to_new_table(apps, schema_editor):
+    """
+    Copy data from the old Profile model in 'oc_lettings_site'
+    to the new Profile model in the 'profiles' app.
+
+    Each existing profile's user and favorite_city fields are preserved.
+    """
     # Récupère les modèles à partir du "registry" des migrations
     OldModel = apps.get_model('oc_lettings_site', 'Profile')
     NewModel = apps.get_model('profiles', 'Profile')

@@ -3,6 +3,13 @@
 from django.db import migrations
 
 def copy_old_data_to_new_table(apps, schema_editor):
+    """
+    Copy data from the old Address and Letting models in 'oc_lettings_site'
+    to the new Address and Letting models in the 'lettings' app.
+
+    This function preserves the relationship between lettings and addresses
+    by using a mapping dictionary from old address IDs to new Address instances.
+    """
     # Récupère anciens modèles Address et Letting dans l'app oc_lettings_site
     OldAddressModel = apps.get_model('oc_lettings_site', 'Address')
     OldLettingModel = apps.get_model('oc_lettings_site', 'Letting')
@@ -39,6 +46,10 @@ def copy_old_data_to_new_table(apps, schema_editor):
 
 
 def reverse_copy_data(apps, schema_editor):
+    """
+    Reverse the copy_old_data_to_new_table operation by deleting
+    all entries in the new Address and Letting models in 'lettings'.
+    """
     NewAddressModel = apps.get_model('lettings', 'Address')
     NewAddressModel.objects.all().delete()
     NewLettingModel = apps.get_model('lettings','Letting')
