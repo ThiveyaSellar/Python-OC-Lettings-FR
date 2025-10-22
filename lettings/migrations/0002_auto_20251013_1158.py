@@ -10,6 +10,7 @@ def copy_old_data_to_new_table(apps, schema_editor):
     This function preserves the relationship between lettings and addresses
     by using a mapping dictionary from old address IDs to new Address instances.
     """
+    """
     # Récupère anciens modèles Address et Letting dans l'app oc_lettings_site
     OldAddressModel = apps.get_model('oc_lettings_site', 'Address')
     OldLettingModel = apps.get_model('oc_lettings_site', 'Letting')
@@ -43,6 +44,8 @@ def copy_old_data_to_new_table(apps, schema_editor):
                 title=old.title,
                 address=new_address,
             )
+    """
+    pass
 
 
 def reverse_copy_data(apps, schema_editor):
@@ -50,10 +53,13 @@ def reverse_copy_data(apps, schema_editor):
     Reverse the copy_old_data_to_new_table operation by deleting
     all entries in the new Address and Letting models in 'lettings'.
     """
+    """
     NewAddressModel = apps.get_model('lettings', 'Address')
     NewAddressModel.objects.all().delete()
     NewLettingModel = apps.get_model('lettings','Letting')
     NewLettingModel.objects.all().delete()
+    """
+    pass
 
 class Migration(migrations.Migration):
 

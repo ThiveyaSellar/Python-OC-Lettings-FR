@@ -9,6 +9,7 @@ def copy_old_data_to_new_table(apps, schema_editor):
 
     Each existing profile's user and favorite_city fields are preserved.
     """
+    """
     # Récupère les modèles à partir du "registry" des migrations
     OldModel = apps.get_model('oc_lettings_site', 'Profile')
     NewModel = apps.get_model('profiles', 'Profile')
@@ -18,6 +19,8 @@ def copy_old_data_to_new_table(apps, schema_editor):
             user=old.user,
             favorite_city=old.favorite_city,
         )
+    """
+    pass
 
 class Migration(migrations.Migration):
 
