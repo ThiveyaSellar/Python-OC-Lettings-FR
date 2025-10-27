@@ -1,6 +1,14 @@
 import os
+import logging
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from configparser import ConfigParser
 
 from pathlib import Path
+
+config = ConfigParser()
+config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'setup.cfg')
+config.read(config_path)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -117,3 +125,14 @@ STATICFILES_DIRS = [BASE_DIR / "static",]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+sentry_sdk.init(
+    dsn=config.get('sentry','dsn'),
+    # Add data like request headers and IP for users;
+    # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
+    integrations=[DjangoIntegration()],
+    send_default_pii=True,
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for tracing.
+    traces_sample_rate=1.0,
+)

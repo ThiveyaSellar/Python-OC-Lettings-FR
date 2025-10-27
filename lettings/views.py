@@ -12,7 +12,9 @@ Functions:
 
 from django.shortcuts import render
 from lettings.models import Letting
+import logging
 
+logger = logging.getLogger(__name__)
 
 def index(request):
     """
@@ -26,7 +28,11 @@ def index(request):
         django.http.HttpResponse:
         Rendered HTML page showing the list of lettings.
     """
-    lettings_list = Letting.objects.all()
+    try:
+        lettings_list = Letting.objects.all()
+    except Exception as e:
+        logger.error(f"Erreur lors de la récupération des lettings: {e}")
+        lettings_list = []
     context = {'lettings_list': lettings_list}
     return render(request, 'lettings/index.html', context)
 
@@ -45,9 +51,22 @@ def letting(request, letting_id):
         django.http.HttpResponse:
             The rendered HTML page showing the details of the specified letting.
     """
-    letting = Letting.objects.get(id=letting_id)
+    try:
+        letting = Letting.objects.get(id=letting_id)
+        logger.info(f"Affichage du letting id={letting_id}: {letting.title}")
+    except Letting.DoesNotExist:
+        logger.error(f"Letting id={letting_id} non trouvé")
+        return render(request, '404.html', status=404)
+    except Exception as e:
+        logger.error(
+            f"Erreur lors de la récupération des lettings: {e}",
+            exc_info=True
+        )
+        return render(request, "500.html", status=500)
     context = {
         'title': letting.title,
         'address': letting.address,
     }
     return render(request, 'lettings/letting.html', context)
+
+

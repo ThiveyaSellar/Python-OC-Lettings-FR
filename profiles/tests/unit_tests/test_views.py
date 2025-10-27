@@ -1,36 +1,32 @@
 import pytest
-from django.urls import reverse
+from django.test import RequestFactory
 from django.contrib.auth.models import User
 from profiles.models import Profile
+from profiles.views import index, profile
 
 @pytest.mark.django_db
-def test_index_view(client):
-    # Création d'un utilisateur
+def test_index_view():
     user = User.objects.create(username="testuser")
-    # Création d'un profile
-    profile = Profile.objects.create(
-        user=user,
-        favorite_city="Paris"
-    )
+    profile_obj = Profile.objects.create(user=user, favorite_city="Paris")
 
-    url = reverse('profiles:index')
-    response = client.get(url)
+    request = RequestFactory().get('/profiles/')
+
+    response = index(request)
 
     assert response.status_code == 200
-    assert profile in response.context['profiles_list']
+    html = response.content.decode()
+    assert "testuser" in html
 
 @pytest.mark.django_db
-def test_profile_view(client):
-    # Création d'un utilisateur
+def test_profile_view():
     user = User.objects.create(username="testuser")
-    # Création d'un profile
-    profile = Profile.objects.create(
-        user=user,
-        favorite_city="Paris"
-    )
-    url = reverse('profiles:profile', kwargs={'username': "testuser"})
-    response = client.get(url)
+    profile_obj = Profile.objects.create(user=user, favorite_city="Paris")
+
+    request = RequestFactory().get(f'/profiles/{user.username}/')
+
+    response = profile(request, username=user.username)
 
     assert response.status_code == 200
-
-    assert response.context['profile'] == profile
+    html = response.content.decode()
+    assert "testuser" in html
+    assert "Paris" in html
