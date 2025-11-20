@@ -124,10 +124,11 @@ STATICFILES_DIRS = [BASE_DIR / "static",]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+dsn = os.environ.get("SENTRY_DSN", "")
 
 sentry_sdk.init(
     # dsn=config.get('sentry', 'dsn'),
-    SENTRY_DSN = os.environ.get("SENTRY_DSN", ""),
+    dsn=dsn,
     # Add data like request headers and IP for users;
     # see https://docs.sentry.io/platforms/python/data-management/data-collected/ for more info
     integrations=[DjangoIntegration()],
