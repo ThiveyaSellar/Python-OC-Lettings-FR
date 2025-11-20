@@ -33,5 +33,5 @@ jobs:
       # Tests + coverage
       - name: Run tests with coverage
         run: |
-          coverage run --source="." manage.py test
+          coverage run --source="lettings,profiles,oc_lettings_site" -m pytest
           coverage report --fail-under=80
