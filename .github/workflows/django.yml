@@ -29,7 +29,8 @@ jobs:
       - name: Lint (flake8)
         run: |
           flake8 oc_lettings_site
-
+      - name: Set Django settings module
+          run: echo "DJANGO_SETTINGS_MODULE=oc_lettings_site.settings" >> $GITHUB_ENV
       # Tests + coverage
       - name: Run tests with coverage
         run: |
