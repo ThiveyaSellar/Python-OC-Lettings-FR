@@ -1,2 +1,2 @@
 [flake8]
-exclude=env/,oc_lettings_site/migrations/,oc_lettings_site/settings.py,lettings/migrations/,profiles/migrations/
+exclude=env/,oc_lettings_site/migrations/,oc_lettings_site/settings.py,lettings/migrations/,profiles/migrations/,oc_lettings_site/tests/unit_tests

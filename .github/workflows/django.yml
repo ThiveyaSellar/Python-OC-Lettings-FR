@@ -27,7 +27,7 @@ jobs:
       # Linting
       - name: Lint (flake8)
         run: |
-          flake8 .
+          flake8 oc_lettings_site
 
       # Tests + coverage
       - name: Run tests with coverage

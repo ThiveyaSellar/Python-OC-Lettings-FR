@@ -9,6 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 def index(request):
     """
     Render the homepage of the application.
