@@ -52,7 +52,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          IMAGE_NAME=myusername/oc-lettings-site:${{ github.sha }}
+          IMAGE_NAME=thiveyasellar/oc-lettings-site:${{ github.sha }}
           docker build -t $IMAGE_NAME .
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
 
