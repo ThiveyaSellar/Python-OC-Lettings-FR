@@ -37,37 +37,40 @@ jobs:
         run: |
           coverage run --source="lettings,profiles,oc_lettings_site" -m pytest
           coverage report --fail-under=80
-  docker:
-    runs-on: ubuntu-latest
+  build_and_push:
+    needs: tests
     if: github.ref == 'refs/heads/master'
-    needs: test
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
         run: |
-          IMAGE_NAME=thiveyasellar/oc-lettings-site:${{ github.sha }}
-          docker build -t $IMAGE_NAME .
-          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
+          docker build -t thiveyasellar/oc-lettings-site:${{ github.sha }} .
 
       - name: Push Docker image
-        run: docker push $IMAGE_NAME
-
-      - name: Run container locally
         run: |
-          docker run -d -p 8000:8000 $IMAGE_NAME
+          docker push thiveyasellar/oc-lettings-site:${{ github.sha }}
   deploy:
+    needs: build_and_push
     runs-on: ubuntu-latest
-    needs: docker
     if: github.ref == 'refs/heads/master'
     steps:
-      - name: Trigger Render Deploy Hook
+      - name: Trigger Render Deployment
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          SERVICE_ID: srv-d4g6su24d50c73f8a27g
         run: |
-          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+          curl -X PATCH \
+            -H "Accept: application/json" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d "{\"image\": \"thiveyasellar/oc-lettings-site:${{ github.sha }}\"}" \
+            https://api.render.com/v1/services/$SERVICE_ID
