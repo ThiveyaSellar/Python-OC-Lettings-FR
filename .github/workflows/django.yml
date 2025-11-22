@@ -63,14 +63,14 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
-      - name: Trigger Render Deployment
+      - name: Deploy new image to Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
           SERVICE_ID: srv-d4g6su24d50c73f8a27g
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           curl -X PATCH \
-            -H "Accept: application/json" \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
-            -d "{\"image\": \"thiveyasellar/oc-lettings-site:${{ github.sha }}\"}" \
+            -d "{\"image\": {\"imagePath\": \"thiveyasellar/oc-lettings-site:${IMAGE_TAG}\"}}" \
             https://api.render.com/v1/services/$SERVICE_ID
