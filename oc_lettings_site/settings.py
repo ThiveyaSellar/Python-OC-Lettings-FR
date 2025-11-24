@@ -2,12 +2,14 @@ import os
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from configparser import ConfigParser
+from dotenv import load_dotenv
 
 from pathlib import Path
 
 config = ConfigParser()
 config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'setup.cfg')
 config.read(config_path)
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,7 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ''
+load_dotenv()
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -126,7 +129,7 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-dsn = os.environ.get("SENTRY_DSN", "")
+dsn = os.getenv('SENTRY_DSN')
 
 sentry_sdk.init(
     # dsn=config.get('sentry', 'dsn'),
