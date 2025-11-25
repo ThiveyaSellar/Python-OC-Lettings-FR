@@ -10,8 +10,8 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     env:
-      SENTRY_DSN: ""
-      SECRET_KEY: "fake-secret-key-for-ci"
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
