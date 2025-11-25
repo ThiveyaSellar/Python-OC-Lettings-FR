@@ -69,4 +69,5 @@ def letting(request, letting_id):
     }
     return render(request, 'lettings/letting.html', context)
 
-
+def test_error(request):
+    division_by_zero = 1 / 0
