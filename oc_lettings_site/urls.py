@@ -2,6 +2,10 @@ from django.contrib import admin
 from django.urls import path, include
 
 from . import views
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 def test_error(request):
@@ -9,8 +13,7 @@ def test_error(request):
         division_by_zero = 1 / 0
         print(division_by_zero)
     except ZeroDivisionError as e:
-        sentry_sdk.capture_exception(
-            e)  # Envoie l'exception à Sentry manuellement
+        logger.error(f"Erreur division: {e}")
         print("Endgame")
 
 
