@@ -13,7 +13,7 @@ def test_error(request):
         division_by_zero = 1 / 0
         print(division_by_zero)
     except ZeroDivisionError:
-        logger.exception("Une erreur  Sentry.")
+        logger.error("Une erreur  Sentry.")
         return HttpResponse("Erreur capturée et envoyée à .")
 
 
