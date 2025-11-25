@@ -9,12 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 def test_error(request):
-    try:
-        division_by_zero = 1 / 0
-        print(division_by_zero)
-    except ZeroDivisionError as e:
-        logger.error(f"Erreur division: {e}")
-        print("Endgame")
+    print("dada")
 
 
 urlpatterns = [
