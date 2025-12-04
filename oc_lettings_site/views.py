@@ -24,3 +24,9 @@ def index(request):
     """
     logger.info("Page d’accueil consultée")
     return render(request, 'index.html')
+
+
+def trigger_500_error(request):
+    return 1/0
+
+
