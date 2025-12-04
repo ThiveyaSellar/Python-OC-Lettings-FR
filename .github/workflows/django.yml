@@ -80,11 +80,11 @@ jobs:
             -d "{\"image\": {\"imagePath\": \"docker.io/thiveyasellar/oc-lettings-site:${IMAGE_TAG}\"}}" \
             https://api.render.com/v1/services/$SERVICE_ID
 
-      - name: Trigger deploy
-        env:
-          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-          SERVICE_ID: srv-d4g6su24d50c73f8a27g
-        run: |
-          curl -X POST \
-            -H "Authorization: Bearer $RENDER_API_KEY" \
-            https://api.render.com/v1/services/$SERVICE_ID/deploys
+      #- name: Trigger deploy
+        #env:
+          #RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          #SERVICE_ID: srv-d4g6su24d50c73f8a27g
+        #run: |
+          #curl -X POST \
+            #-H "Authorization: Bearer $RENDER_API_KEY" \
+            #https://api.render.com/v1/services/$SERVICE_ID/deploys
