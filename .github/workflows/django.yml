@@ -54,11 +54,15 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t thiveyasellar/oc-lettings-site:${{ github.sha }} .
+          docker build \
+            -t thiveyasellar/oc-lettings-site:${{ github.sha }} \
+            -t thiveyasellar/oc-lettings-site:latest \
+            .
 
       - name: Push Docker image
         run: |
           docker push thiveyasellar/oc-lettings-site:${{ github.sha }}
+          docker push thiveyasellar/oc-lettings-site:latest
   deploy:
     needs: build_and_push
     runs-on: ubuntu-latest
