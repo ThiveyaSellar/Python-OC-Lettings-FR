@@ -28,5 +28,3 @@ def index(request):
 
 def trigger_500_error(request):
     return 1/0
-
-

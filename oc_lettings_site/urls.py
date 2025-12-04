@@ -9,5 +9,5 @@ urlpatterns = [
     path('lettings/', include('lettings.urls', namespace="lettings")),
     path('profiles/', include('profiles.urls', namespace="profiles")),
     path('admin/', admin.site.urls),
-    path('test-500/', trigger_500_error),
+    path('test-500/', views.trigger_500_error),
 ]
