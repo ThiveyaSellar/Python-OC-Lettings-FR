@@ -30,6 +30,6 @@ def index(request):
 def trigger_500_error(request):
     try:
         1 / 0
-    except Exception as e:
+    except Exception:
         logger.error("Erreur serveur, division par zero")
         return render(request, "500.html", status=500)
