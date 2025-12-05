@@ -75,3 +75,36 @@ Utilisation de PowerShell, comme ci-dessus sauf :
 
 - Pour activer l'environnement virtuel, `.\venv\Scripts\Activate.ps1` 
 - Remplacer `which <my-command>` par `(Get-Command <my-command>).Path`
+
+#### Déploiement
+
+Ce projet utilise :
+- Docker pour containeriser l’application
+- GitHub Actions pour automatiser les tests, le linting, la création de l'image
+- Render pour héberger le service
+- Sentry pour la surveillance des erreurs.
+
+
+Docker permet de construire et exécuter l’application de façon cohérente sur tous les environnements.
+GitHub Actions déclenche les tests, construit et pousse l’image Docker automatiquement sur Docker Hub à chaque modification.
+Render déploie et héberge l’application à partir de l’image Docker présente sur Docker Hub.
+Sentry collecte et alerte sur les erreurs en production pour faciliter la maintenance.
+
+### Étapes de déploiement
+
+Construire et tester localement :
+
+`docker build -t utilisateur/oc-lettings-site:latest .`
+`docker run -p 8000:8000 -e SECRET_KEY=secret -e DEBUG=0 utilisateur/oc-lettings-site:latest`
+
+Pousser l’image sur Docker Hub :
+
+`docker login`
+`docker push utilisateur/oc-lettings-site:latest`
+
+Configurer Render :
+
+- Créer un nouveau service web en choisissant le type « Docker ».
+- Indiquer l’URL de l’image Docker Hub.
+- Ajouter les variables d'environnement (SECRET_KEY, SENTRY_DSN)
+- Déployer la version la plus récente.
