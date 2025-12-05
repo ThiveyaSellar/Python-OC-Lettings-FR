@@ -10,3 +10,5 @@ The goal of this project is to improve an existing Django application on several
 * Implement a CI/CD pipeline
 * Deploy the application
 * Document the application
+
+Application : https://oc-lettings-site-h6zc.onrender.com
