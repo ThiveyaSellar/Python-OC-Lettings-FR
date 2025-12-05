@@ -22,8 +22,6 @@ def index(request):
         django.http.HttpResponse:
         The rendered HTML page for the homepage ('index.html').
     """
-    logger = logging.getLogger(__name__)
-    logger.info("Page d’accueil consultéee")
     return render(request, 'index.html')
 
 
