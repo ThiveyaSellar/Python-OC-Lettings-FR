@@ -22,7 +22,7 @@ def index(request):
         django.http.HttpResponse:
         The rendered HTML page for the homepage ('index.html').
     """
-    logger.info("Page d’accueil consultée")
+    logger.error("Page d’accueil consultée")
     return render(request, 'index.html')
 
 
