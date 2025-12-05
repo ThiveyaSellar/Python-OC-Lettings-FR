@@ -7,3 +7,4 @@ oc-lettings-site-duplicate.sqlite3
 oc-lettings-site-from-dump.sqlite3
 .idea/
 setup.cfg
+oc-lettings-site.sqlite3
