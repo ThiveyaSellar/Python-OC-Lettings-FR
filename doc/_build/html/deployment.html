@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Deployment &#8212; oc-lettings  documentation</title>
+    <title>Deployment and Application Management Procedures &#8212; oc-lettings  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
@@ -14,6 +14,7 @@
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="User’s guide" href="user_guide.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -31,9 +32,185 @@
 
           <div class="body" role="main">
             
-  <section id="deployment">
-<h1>Deployment<a class="headerlink" href="#deployment" title="Link to this heading">¶</a></h1>
-<p>Test</p>
+  <section id="deployment-and-application-management-procedures">
+<h1>Deployment and Application Management Procedures<a class="headerlink" href="#deployment-and-application-management-procedures" title="Link to this heading">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Remember to set the <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> variable to <code class="docutils literal notranslate"><span class="pre">False</span></code> in production for security and performance reasons.
+Keep sensitive environment variables (such as <code class="docutils literal notranslate"><span class="pre">SECRET_KEY</span></code>) out of the source code.</p>
+</div>
+<section id="building-and-running-the-application">
+<h2>1. Building and Running the Application<a class="headerlink" href="#building-and-running-the-application" title="Link to this heading">¶</a></h2>
+<p>This section covers how to build the Docker image and run it locally.</p>
+<section id="building-the-docker-image">
+<h3>1.1. Building the Docker Image<a class="headerlink" href="#building-the-docker-image" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>Place the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> at the project root.</p></li>
+<li><p>Ensure Docker Desktop is running.</p></li>
+<li><p>Build the image:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>thiveyasellar/oc-lettings-site:latest<span class="w"> </span>.
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="running-the-docker-container">
+<h3>1.2. Running the Docker Container<a class="headerlink" href="#running-the-docker-container" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>Run the container locally:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8000</span>:8000<span class="w"> </span>-e<span class="w"> </span><span class="nv">SECRET_KEY</span><span class="o">=</span><span class="nb">test</span><span class="w"> </span>-e<span class="w"> </span><span class="nv">DEBUG</span><span class="o">=</span><span class="m">0</span><span class="w"> </span>thiveyasellar/oc-lettings-site:latest
+</pre></div>
+</div>
+</li>
+<li><p>Access the app:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8000</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="managing-and-publishing-docker-images">
+<h2>2. Managing and Publishing Docker Images<a class="headerlink" href="#managing-and-publishing-docker-images" title="Link to this heading">¶</a></h2>
+<p>This section explains how to manage containers and push the image to Docker Hub.</p>
+<section id="managing-containers">
+<h3>2.1. Managing Containers<a class="headerlink" href="#managing-containers" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>List running containers:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>ps
+</pre></div>
+</div>
+</li>
+<li><p>Stop a container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>stop<span class="w"> </span>&lt;container-id&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Remove a container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>rm<span class="w"> </span>&lt;container-id&gt;
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+<section id="publishing-to-docker-hub">
+<h3>2.2. Publishing to Docker Hub<a class="headerlink" href="#publishing-to-docker-hub" title="Link to this heading">¶</a></h3>
+<ul>
+<li><p>Log in:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>login
+</pre></div>
+</div>
+</li>
+<li><p>Push the image:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>push<span class="w"> </span>thiveyasellar/oc-lettings-site:latest
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="deployment-ci-cd-and-monitoring">
+<h2>3. Deployment, CI/CD and Monitoring<a class="headerlink" href="#deployment-ci-cd-and-monitoring" title="Link to this heading">¶</a></h2>
+<p>This section covers Render deployment, GitHub Actions, and Sentry.</p>
+<section id="creating-a-docker-service-on-render">
+<h3>3.1. Creating a Docker Service on Render<a class="headerlink" href="#creating-a-docker-service-on-render" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Create an account at <code class="docutils literal notranslate"><span class="pre">https://render.com</span></code>.</p></li>
+<li><p>Create a new web service using “Docker” as the deployment type.</p></li>
+<li><p>Provide your Docker Hub image URL.</p></li>
+<li><p>Deploy from the Render dashboard.</p></li>
+</ul>
+</section>
+<section id="ci-cd-with-github-actions">
+<h3>3.2. CI/CD with GitHub Actions<a class="headerlink" href="#ci-cd-with-github-actions" title="Link to this heading">¶</a></h3>
+<section id="repository-structure">
+<h4>3.2.1. Repository Structure<a class="headerlink" href="#repository-structure" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">.github/workflows</span></code> directory at the root of your project.</p></li>
+<li><p>Place your workflow YAML files inside.</p></li>
+</ul>
+</section>
+<section id="example-pipeline">
+<h4>3.2.2. Example Pipeline<a class="headerlink" href="#example-pipeline" title="Link to this heading">¶</a></h4>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">build</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v3</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.11&#39;</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">pip install -r requirements.txt</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run tests</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">python manage.py test</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="monitoring-with-sentry">
+<h3>3.3. Monitoring with Sentry<a class="headerlink" href="#monitoring-with-sentry" title="Link to this heading">¶</a></h3>
+<section id="setting-up-sentry">
+<h4>3.3.1. Setting Up Sentry<a class="headerlink" href="#setting-up-sentry" title="Link to this heading">¶</a></h4>
+<ul>
+<li><p>Create a Sentry account and a project.</p></li>
+<li><p>Install the SDK:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>sentry-sdk
+</pre></div>
+</div>
+</li>
+<li><p>Configure Django:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sentry_sdk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sentry_sdk.integrations.django</span><span class="w"> </span><span class="kn">import</span> <span class="n">DjangoIntegration</span>
+
+<span class="n">sentry_sdk</span><span class="o">.</span><span class="n">init</span><span class="p">(</span>
+    <span class="n">dsn</span><span class="o">=</span><span class="s2">&quot;your_sentry_dsn_here&quot;</span><span class="p">,</span>
+    <span class="n">integrations</span><span class="o">=</span><span class="p">[</span><span class="n">DjangoIntegration</span><span class="p">()],</span>
+    <span class="n">traces_sample_rate</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">send_default_pii</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Logging in the application</p></li>
+</ul>
+<p>Using Python’s built-in <code class="docutils literal notranslate"><span class="pre">logging</span></code> module, the application captures and records important events and errors.</p>
+<p>Example of logging usage in a Python file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1"># Informational message</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Displaying letting id=</span><span class="si">{</span><span class="n">letting_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">letting</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Error message when a letting is not found</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Letting id=</span><span class="si">{</span><span class="n">letting_id</span><span class="si">}</span><span class="s2"> not found&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="how-it-works">
+<h4>3.3.2. How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p>Sentry captures exceptions automatically.</p></li>
+<li><p>Errors appear in the Sentry dashboard with stack traces, environment data, and user info.</p></li>
+<li><p>You can enable email notifications.</p></li>
+</ul>
+</section>
+</section>
+</section>
 </section>
 
 
@@ -73,13 +250,20 @@
 <li class="toctree-l1"><a class="reference internal" href="technologies.html">Technologies and Programming Languages to Use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="database_structure.html">Database Structure and Data Models</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">Description of Programming Interfaces</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user_guide.html">User’s guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Deployment and Application Management Procedures</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#building-and-running-the-application">1. Building and Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#managing-and-publishing-docker-images">2. Managing and Publishing Docker Images</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#deployment-ci-cd-and-monitoring">3. Deployment, CI/CD and Monitoring</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="user_guide.html" title="previous chapter">User’s guide</a></li>
   </ul></li>
 </ul>
 </div>

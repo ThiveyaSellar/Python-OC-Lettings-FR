@@ -16,5 +16,5 @@ oc-lettings documentation
    technologies
    database_structure
    api
-   usage
+   user_guide
    deployment
